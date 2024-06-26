@@ -1,44 +1,45 @@
 //your JS code here. If required.
-const circles = document.querySelectorAll('.circle');
-const prevButton = document.getElementById('prev');
-const nextButton = document.getElementById('next');
-let currentActive = 1;
+document.addEventListener("DOMContentLoaded", function () {
+  const circles = document.querySelectorAll(".circle");
+  const prevButton = document.getElementById("prev");
+  const nextButton = document.getElementById("next");
+  let currentActive = 0;
 
-nextButton.addEventListener('click', () => {
-  currentActive++;
+  updateButtons();
 
-  if (currentActive > circles.length) {
-    currentActive = circles.length;
-  }
-
-  update();
-});
-
-prevButton.addEventListener('click', () => {
-  currentActive--;
-
-  if (currentActive < 1) {
-    currentActive = 1;
-  }
-
-  update();
-});
-
-function update() {
-  circles.forEach((circle, index) => {
-    if (index < currentActive) {
-      circle.classList.add('active');
-    } else {
-      circle.classList.remove('active');
-    }
+  nextButton.addEventListener("click", function () {
+    currentActive++;
+    updateProgress();
   });
 
-  if (currentActive === 1) {
-    prevButton.disabled = true;
-  } else if (currentActive === circles.length) {
-    nextButton.disabled = true;
-  } else {
-    prevButton.disabled = false;
-    nextButton.disabled = false;
+  prevButton.addEventListener("click", function () {
+    currentActive--;
+    updateProgress();
+  });
+
+  function updateProgress() {
+    circles.forEach((circle, index) => {
+      if (index <= currentActive) {
+        circle.classList.add("active");
+      } else {
+        circle.classList.remove("active");
+      }
+    });
+
+    updateButtons();
   }
-}
+
+  function updateButtons() {
+    if (currentActive === 0) {
+      prevButton.disabled = true;
+    } else {
+      prevButton.disabled = false;
+    }
+
+    if (currentActive === circles.length - 1) {
+      nextButton.disabled = true;
+    } else {
+      nextButton.disabled = false;
+    }
+  }
+});
